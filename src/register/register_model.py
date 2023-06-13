@@ -6,7 +6,7 @@ class RegisterModel:
     def __init__(self):
         pass
 
-    def eval_metrics(actual, pred):
+    def eval_metrics(self, actual, pred):
         accuracy = accuracy_score(actual, pred)
         f1 = f1_score(actual, pred)
         roc_auc = roc_auc_score(actual, pred)
