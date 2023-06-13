@@ -5,10 +5,11 @@ import mlflow.sklearn
 from mlflow.models.signature import infer_signature
 from urllib.parse import urlparse
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
+
 
 from src.data.download_dataset import Download
 from src.models.train_model import TrainModel
+from src.register.register_model import RegisterModel
 
 # Download data
 
@@ -52,12 +53,7 @@ criterion = 'entropy'
 random_state = 0
 
 
-def eval_metrics(actual, pred):
-    accuracy = accuracy_score(actual, pred)
-    f1 = f1_score(actual, pred)
-    roc_auc = roc_auc_score(actual, pred)
-    
-    return accuracy, f1, roc_auc
+rg = RegisterModel()
 
 with mlflow.start_run():
 
@@ -67,7 +63,7 @@ with mlflow.start_run():
     # predicted_qualities = lr.predict(test_x)
     y_pred = classifier.predict(X_test)
 
-    (accuracy, f1, roc_auc) = eval_metrics(y_test, y_pred)
+    (accuracy, f1, roc_auc) = rg.eval_metrics(y_test, y_pred)
 
     # print("Elasticnet model (alpha={:f}, l1_ratio={:f}):".format(alpha, l1_ratio))
     # print("  RMSE: %s" % rmse)
