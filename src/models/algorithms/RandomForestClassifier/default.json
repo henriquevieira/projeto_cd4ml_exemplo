@@ -1,0 +1,6 @@
+{
+    "n_estimators": 10,
+    "criterion" : "entropy",
+    "max_features": 0.4,
+    "random_state": 42
+}

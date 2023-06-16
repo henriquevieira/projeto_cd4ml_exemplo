@@ -177,4 +177,5 @@ test:
 #################################################################################
 
 run:
+	make install
 	python3 src/pipeline/run_pipeline.py
