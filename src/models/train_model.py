@@ -4,18 +4,22 @@ import json
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from src.models.load_algorithm import Load
+from src.models.loads import Load
 
 class TrainModel():
 
-    def __init__(self, X, y, test_size = 0.20, random_state = 0):
+    def __init__(self, algorithm_name, params_filepath, X, y, test_size = 0.20, random_state = 0):
+        self.algorithm_name = algorithm_name
+        self.params_filepath = params_filepath
         self.X = X
         self.y = y
         self.test_size = test_size
         self.random_state = random_state
 
+        self.load = Load(algorithm_name = self.algorithm_name)
         self.X_train, self.X_test, self.y_train, self.y_test = self.spliting_data()
         self.algorithm, self.metrics = self.load_algorithm_and_metrics()
+        self.params = self.load_parameters()
         self.model = self.training()
 
     def spliting_data(self):
@@ -27,29 +31,23 @@ class TrainModel():
 
         return X_train, X_test, y_train, y_test
 
-    def load_parameters(self, params_directory):
-        try:
-            with open(params_directory, 'r') as file:
-                return json.load(file)
-        except Exception as e:
-            print("ERROR LOAD PARAMETERS")
-            print(e)
+    def load_parameters(self):
+        params = self.load.load_parameters(params_filepath = self.params_filepath)
+        return params
 
     def load_algorithm_and_metrics(self):
         
         # TODO REMOVE HARDCODE
-        algorithm_name = "RandomForestClassifier"
+        # algorithm_name = "RandomForestClassifier"
         
-        load = Load(algorithm_name = algorithm_name)
-        algorithm, metrics = load.load_algorithm_and_metrics()
+        algorithm, metrics = self.load.load_algorithm_and_metrics()
         return algorithm, metrics
 
     def training(self):
 
         # TODO REMOVE HARDCODE
-        params_directory = 'src/models/algorithms/RandomForestClassifier/default.json'
-        params = self.load_parameters(params_directory)
-        model = self.algorithm(params,  self.X_train, self.y_train)
+        # params_directory = 'src/models/algorithms/RandomForestClassifier/default.json'
+        model = self.algorithm(self.params, self.X_train, self.y_train)
         model.fit()
 
         return model

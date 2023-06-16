@@ -9,17 +9,14 @@ from src.models.train_model import TrainModel
 
 class RegisterModel:
 
-    def __init__(self, data):
+    def __init__(self, data, algorithm_name, params_filepath):
 
         self.data = data
+        self.algorithm_name = algorithm_name
+        self.params_filepath = params_filepath
 
         # self.remote_server_uri = "http://192.168.68.53:12000/" # this value has been replaced
         self.remote_server_uri = os.environ['MLFLOW_TRACKING_URL']
-        self.tags = {
-                "Projeto": "Tutorial CD4ML",
-                "team": "Ciencia de dados",
-                "dataset": "Breast Cancer"
-            }
 
     def log_params(self):
 
@@ -36,10 +33,13 @@ class RegisterModel:
     def do_register(self):
 
         mlflow.set_tracking_uri(uri=self.remote_server_uri)
+        # TODO REMOVE HARDCODE
         mlflow.set_experiment(experiment_name='projeto_cd4ml_exemplo')
 
         X, y = self.data.seperate_x_and_y()
-        train_model = TrainModel(X = X, y = y)
+        train_model = TrainModel(algorithm_name = self.algorithm_name, 
+                                 params_filepath = self.params_filepath, 
+                                 X = X, y = y)
 
         with mlflow.start_run():
 

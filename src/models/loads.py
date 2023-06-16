@@ -1,10 +1,11 @@
 import os
 import glob
+import json
 
 class Load:
 
     def __init__(self, algorithm_name):
-        self.algorithm_dir = 'algorithms'
+        self.algorithm_dir = 'src/models/algorithms'
         self.algorithm_name = algorithm_name
 
     def list_algorithm_names(self):
@@ -34,4 +35,14 @@ class Load:
                 return model, metrics
         except Exception as e:
             print("ERROR MODEL NOT FOUND")
+            print(e)
+
+    def load_parameters(self, params_filepath):
+        try:
+            if self.find_algorithm:
+                params_directory = os.path.join(self.algorithm_dir, self.algorithm_name, params_filepath)
+                with open(params_directory, 'r') as file:
+                    return json.load(file)
+        except Exception as e:
+            print("ERROR LOAD PARAMETERS")
             print(e)
