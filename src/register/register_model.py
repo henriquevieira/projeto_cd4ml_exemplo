@@ -18,10 +18,10 @@ class RegisterModel:
         # self.remote_server_uri = "http://192.168.68.53:12000/" # this value has been replaced
         self.remote_server_uri = os.environ['MLFLOW_TRACKING_URL']
 
-    def log_params(self):
+    def log_params(self, params):
 
-        for param_name in self.params.keys():
-            param_content = self.params[param_name]
+        for param_name in params.keys():
+            param_content = params[param_name]
             mlflow.log_param(param_name, param_content)
 
     def log_metrics(self, metrics):
@@ -50,6 +50,7 @@ class RegisterModel:
             X_train = train_model.get_X_train()
             y_test = train_model.get_y_test()
 
+            params  = train_model.get_params()
             metrics = train_model.eval_metrics(y_test, y_pred)
 
             # print("Elasticnet model (alpha={:f}, l1_ratio={:f}):".format(alpha, l1_ratio))
@@ -64,6 +65,7 @@ class RegisterModel:
             # mlflow.log_metric("f1", f1)
             # mlflow.log_metric("roc_auc", roc_auc)
 
+            self.log_params(params)
             self.log_metrics(metrics)
 
             signature = infer_signature(X_train, y_test)

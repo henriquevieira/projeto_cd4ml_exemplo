@@ -55,6 +55,9 @@ class TrainModel():
     def get_trained_model(self):
         return self.model
 
+    def get_params(self):
+        return self.params
+
     def get_X_train(self):
         return self.X_train
 
