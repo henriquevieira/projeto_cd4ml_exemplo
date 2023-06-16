@@ -32,6 +32,7 @@ pipeline {
         }
         stage('Run tests') {
             steps {
+                sh 'make lint'
                 sh 'make test'
             }
         }

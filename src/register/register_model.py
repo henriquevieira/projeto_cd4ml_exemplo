@@ -1,10 +1,9 @@
+import os
 
 import mlflow
 import mlflow.sklearn
 from mlflow.models.signature import infer_signature
 from urllib.parse import urlparse
-
-from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 
 from src.models.train_model import TrainModel
 
@@ -14,20 +13,13 @@ class RegisterModel:
 
         self.data = data
 
-        self.remote_server_uri = "http://192.168.68.53:12000/" # this value has been replaced
+        # self.remote_server_uri = "http://192.168.68.53:12000/" # this value has been replaced
+        self.remote_server_uri = os.environ['MLFLOW_TRACKING_URL']
         self.tags = {
                 "Projeto": "Tutorial CD4ML",
                 "team": "Ciencia de dados",
                 "dataset": "Breast Cancer"
             }
-
-    def eval_metrics(self, actual, pred):
-
-        accuracy = accuracy_score(actual, pred)
-        f1 = f1_score(actual, pred)
-        roc_auc = roc_auc_score(actual, pred)
-        
-        return accuracy, f1, roc_auc
 
     def log_params(self):
 
@@ -35,10 +27,10 @@ class RegisterModel:
             param_content = self.params[param_name]
             mlflow.log_param(param_name, param_content)
 
-    def log_metrics(self):
+    def log_metrics(self, metrics):
 
-        for metric_name in self.metrics.keys():
-            metric_content = self.metrics[metric_name]
+        for metric_name in metrics.keys():
+            metric_content = metrics[metric_name]
             mlflow.log_metric(metric_name, metric_content)
 
     def do_register(self):
@@ -58,7 +50,7 @@ class RegisterModel:
             X_train = train_model.get_X_train()
             y_test = train_model.get_y_test()
 
-            (accuracy, f1, roc_auc) = self.eval_metrics(y_test, y_pred)
+            metrics = train_model.eval_metrics(y_test, y_pred)
 
             # print("Elasticnet model (alpha={:f}, l1_ratio={:f}):".format(alpha, l1_ratio))
             # print("  RMSE: %s" % rmse)
@@ -68,9 +60,11 @@ class RegisterModel:
             # mlflow.log_param("n_estimators", n_estimators)
             # mlflow.log_param("criterion", criterion)
             # mlflow.log_param("random_state", random_state)
-            mlflow.log_metric("accuracy", accuracy)
-            mlflow.log_metric("f1", f1)
-            mlflow.log_metric("roc_auc", roc_auc)
+            # mlflow.log_metric("accuracy", accuracy)
+            # mlflow.log_metric("f1", f1)
+            # mlflow.log_metric("roc_auc", roc_auc)
+
+            self.log_metrics(metrics)
 
             signature = infer_signature(X_train, y_test)
 

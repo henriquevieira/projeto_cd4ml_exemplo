@@ -4,7 +4,7 @@ import json
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from src.models.load_model import Model
+from src.models.load_algorithm import Load
 
 class TrainModel():
 
@@ -15,6 +15,7 @@ class TrainModel():
         self.random_state = random_state
 
         self.X_train, self.X_test, self.y_train, self.y_test = self.spliting_data()
+        self.algorithm, self.metrics = self.load_algorithm_and_metrics()
         self.model = self.training()
 
     def spliting_data(self):
@@ -34,17 +35,21 @@ class TrainModel():
             print("ERROR LOAD PARAMETERS")
             print(e)
 
+    def load_algorithm_and_metrics(self):
+        
+        # TODO REMOVE HARDCODE
+        algorithm_name = "RandomForestClassifier"
+        
+        load = Load(algorithm_name = algorithm_name)
+        algorithm, metrics = load.load_algorithm_and_metrics()
+        return algorithm, metrics
+
     def training(self):
 
         # TODO REMOVE HARDCODE
-        algorithm_name = "RandomForestClassifier"
         params_directory = 'src/models/algorithms/RandomForestClassifier/default.json'
-
         params = self.load_parameters(params_directory)
-        m = Model(algorithm_name = algorithm_name)
-        algorithm = m.load_model()
-
-        model = algorithm(params,  self.X_train, self.y_train)
+        model = self.algorithm(params,  self.X_train, self.y_train)
         model.fit()
 
         return model
@@ -71,3 +76,9 @@ class TrainModel():
 
         model = self.get_trained_model()
         return model.predict(X_test)
+
+    def eval_metrics(self, actual, pred):
+
+        metrics = self.metrics(actual, pred)
+        return metrics.eval_metrics()
+
