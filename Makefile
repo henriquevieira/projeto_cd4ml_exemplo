@@ -162,10 +162,10 @@ env:
 	apt install python3-venv -y
 	apt autoclean -y
 	apt autoremove -y
-	python3 -m venv $(PROJECT_DIR)/
-	source $(PROJECT_DIR)/bin/activate
+	python3 -m venv $(PROJECT_DIR)/env
+	source $(PROJECT_DIR)/env/bin/activate
 
-install:
+install: env
 	pip3 install --upgrade pip && pip3 install -r requirements.txt
 	pip3 uninstall src-0.1.0-py3-none-any.whl -y
 	python3 setup.py bdist bdist_wheel
