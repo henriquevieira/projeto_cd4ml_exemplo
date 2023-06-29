@@ -152,6 +152,7 @@ create_dir:
 	mkdir -p data/external
 	mkdir -p data/interim
 	mkdir -p data/processed
+	mkdir -p env
 
 #################################################################################
 # Install
@@ -162,8 +163,8 @@ env:
 	apt install python3-venv -y
 	apt autoclean -y
 	apt autoremove -y
-	python3 -m venv $(PROJECT_DIR)/env
-	source $(PROJECT_DIR)/env/bin/activate
+	python3 -m venv env
+	source env/bin/activate
 
 install: env
 	pip3 install --upgrade pip && pip3 install -r requirements.txt
