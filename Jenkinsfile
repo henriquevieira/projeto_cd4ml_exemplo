@@ -27,6 +27,7 @@ pipeline {
             steps {
                 sh 'make clean'
                 sh 'make create_dir'
+                sh 'make env'
                 sh 'make install'
             }
         }

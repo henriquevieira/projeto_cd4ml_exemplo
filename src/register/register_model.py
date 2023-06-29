@@ -9,8 +9,8 @@ from src.models.train_model import TrainModel
 
 class RegisterModel:
 
-    def __init__(self, data, algorithm_name, params_filepath):
-
+    def __init__(self, experiment_name, data, algorithm_name, params_filepath):
+        self.experiment_name = experiment_name
         self.data = data
         self.algorithm_name = algorithm_name
         self.params_filepath = params_filepath
@@ -34,7 +34,7 @@ class RegisterModel:
 
         mlflow.set_tracking_uri(uri=self.remote_server_uri)
         # TODO REMOVE HARDCODE
-        mlflow.set_experiment(experiment_name='projeto_cd4ml_exemplo')
+        mlflow.set_experiment(experiment_name=self.experiment_name)
 
         X, y = self.data.seperate_x_and_y()
         train_model = TrainModel(algorithm_name = self.algorithm_name, 

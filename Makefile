@@ -157,6 +157,14 @@ create_dir:
 # Install
 #################################################################################
 
+env:
+	apt update
+	apt install python3-venv -y
+	apt autoclean -y
+	apt autoremove -y
+	python3 -m venv $(PROJECT_DIR)/.venv
+	source $(PROJECT_DIR)/.venv/bin/activate
+
 install:
 	pip3 install --upgrade pip && pip3 install -r requirements.txt
 	pip3 uninstall src-0.1.0-py3-none-any.whl -y
