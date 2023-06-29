@@ -37,7 +37,7 @@ pipeline {
                 sh 'make test'
             }
         }
-        stage('Run ML pipeline') {
+        stage('Run pipeline') {
             steps {
                 // sh 'python3 run_python_script.py pipeline ${problem_name} ${ml_pipeline_params_name} ${feature_set_name} ${algorithm_name} ${algorithm_params_name}'
                 sh 'make run'

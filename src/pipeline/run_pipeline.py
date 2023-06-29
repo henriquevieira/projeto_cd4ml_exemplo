@@ -27,7 +27,7 @@ data = LoadData(path = data_path)
 # TODO verify mlflow necessity
 
 # register model
-rg = RegisterModel(experiment_name = pipeline_config.get_config("experiment_name")
+rg = RegisterModel(experiment_name = pipeline_config.get_config("experiment_name"),
                    data = data, 
                    algorithm_name = pipeline_config.get_config("algorithm_name"), 
                    params_filepath = pipeline_config.get_config("params_filepath"))
