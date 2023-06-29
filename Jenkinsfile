@@ -29,6 +29,7 @@ pipeline {
                 sh 'make create_dir'
                 sh 'make env'
                 sh 'make install'
+                sh 'echo Olá pessoal'
             }
         }
         stage('Run tests') {

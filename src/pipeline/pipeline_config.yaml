@@ -10,5 +10,5 @@ description: ""
 # MODEL
 data_raw_path: "..."
 algorithm_name: "RandomForestClassifier"
-params_filepath: 'parameters1.json'
+params_filepath: 'params2.json'
 registered_model_name: "RandomForestClassifierBreastCancerModel"

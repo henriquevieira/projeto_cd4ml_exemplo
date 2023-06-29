@@ -11,6 +11,7 @@ pipeline_config = PipelineConfig()
 
 # Download data
 
+# HARDCODE
 absolute_path = os.path.abspath('')
 data_raw_path = os.path.join(absolute_path, 'data/raw')
 
