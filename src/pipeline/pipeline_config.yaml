@@ -9,6 +9,6 @@ description: ""
 
 # MODEL
 data_raw_path: "..."
-algorithm_name: "RandomForestClassifier"
+algorithm_name: "UNET"
 params_filepath: 'params2.json'
 registered_model_name: "RandomForestClassifierBreastCancerModel"
