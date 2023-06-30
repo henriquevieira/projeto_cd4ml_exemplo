@@ -2,6 +2,8 @@ import os
 
 import mlflow
 import mlflow.sklearn
+from mlflow import MlflowClient
+from mlflow.store.artifact.runs_artifact_repo import RunsArtifactRepository
 from mlflow.models.signature import infer_signature
 from urllib.parse import urlparse
 
@@ -29,6 +31,27 @@ class RegisterModel:
         for metric_name in metrics.keys():
             metric_content = metrics[metric_name]
             mlflow.log_metric(metric_name, metric_content)
+
+    def set_complement_info(self):
+        client = MlflowClient(tracking_uri=self.remote_server_uri)
+        # TODO REMOVE HARDCODE
+        client.create_registered_model("RandomForestClassifierBreastCancerModel")
+
+        # Create a new version of the rfr model under the registered model name
+        desc = "A new version of the model"
+        new_run_id = run.info.run_id
+        runs_uri = "runs:/{}/sklearn-model".format(new_run_id)
+        model_src = RunsArtifactRepository.get_underlying_uri(runs_uri)
+        mv = client.create_model_version(name, model_src, run.info.run_id, description=desc)
+        version = client.search_model_versions("run_id='{}'".format(new_run_id))[0].version
+        client.transition_model_version_stage(name, version, "Production")
+        print("Name: {}".format(mv.name))
+        print("Version: {}".format(mv.version))
+        print("Description: {}".format(mv.description))
+        print("Status: {}".format(mv.status))
+        print("Stage: {}".format(mv.current_stage))
+
+
 
     def do_register(self):
 
@@ -79,6 +102,7 @@ class RegisterModel:
             #     # please refer to the doc for more information:
             #     # https://mlflow.org/docs/latest/model-registry.html#api-workflow
             
+            # TODO REMOVE HARDCODE
             mlflow.sklearn.log_model(trained_model, 
                                     "model",
                                     registered_model_name="RandomForestClassifierBreastCancerModel",
@@ -87,3 +111,4 @@ class RegisterModel:
             # mlflow.sklearn.log_model(classifier, "model") #, signature=signature)
 
             mlflow.log_artifacts("data", artifact_path="data")
+            self.set_complement_info()

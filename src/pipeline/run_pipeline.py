@@ -34,7 +34,3 @@ rg = RegisterModel(experiment_name = pipeline_config.get_config("experiment_name
                    params_filepath = pipeline_config.get_config("params_filepath"))
 
 rg.do_register()
-
-
-
-
