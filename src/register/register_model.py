@@ -41,7 +41,7 @@ class RegisterModel:
         new_run_id = run.info.run_id
         version = client.search_model_versions("run_id='{}'".format(new_run_id))[0].version
         
-        client.set_experiment_tag(experiment_id, "teste", "0")
+        # client.set_experiment_tag(experiment_id, "teste", "0")
         client.transition_model_version_stage(name_model, version, "Production", archive_existing_versions = True)
         # mv = client.get_model_version(name=name_model, version=version)
         mv = client.update_model_version(name_model, version, desc)
