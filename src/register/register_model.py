@@ -39,13 +39,12 @@ class RegisterModel:
         desc = "A new version of the model"
         
         new_run_id = run.info.run_id
-        # runs_uri = "runs:/{}/sklearn-model".format(new_run_id)
-        # model_src = RunsArtifactRepository.get_underlying_uri(runs_uri)
-        # mv = client.create_model_version(name, model_src, run.info.run_id, description=desc)
         version = client.search_model_versions("run_id='{}'".format(new_run_id))[0].version
         
-        client.transition_model_version_stage(name_model, version, "Production")
-
+        client.set_experiment_tag(experiment_id, "teste", "0")
+        client.transition_model_version_stage(name_model, version, "Production", archive_existing_versions = True)
+        # mv = client.get_model_version(name=name_model, version=version)
+        mv = client.update_model_version(name_model, version, desc)
         print("Name: {}".format(mv.name))
         print("Version: {}".format(mv.version))
         print("Description: {}".format(mv.description))
