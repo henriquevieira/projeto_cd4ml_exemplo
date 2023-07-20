@@ -9,8 +9,6 @@ from src.register.register_model import RegisterModel
 # load pipeline config
 pipeline_config = PipelineConfig()
 
-# Download data
-
 # HARDCODE
 absolute_path = os.path.abspath('')
 data_raw_path = os.path.join(absolute_path, 'data/raw')
@@ -24,13 +22,11 @@ data = LoadData(path = data_path)
 
 # processing data
 
-# training
-# TODO verify mlflow necessity
+# training and register model
+# rg = RegisterModel(experiment_name = pipeline_config.get_config("experiment_name"),
+#                    data = data, 
+#                    algorithm_name = pipeline_config.get_config("algorithm_name"), 
+#                    params_filepath = pipeline_config.get_config("params_filepath"))
 
-# register model
-rg = RegisterModel(experiment_name = pipeline_config.get_config("experiment_name"),
-                   data = data, 
-                   algorithm_name = pipeline_config.get_config("algorithm_name"), 
-                   params_filepath = pipeline_config.get_config("params_filepath"))
-
-rg.do_register()
+rg = RegisterModel(data = data, pipeline_config)
+rg.do_training_and_registering()

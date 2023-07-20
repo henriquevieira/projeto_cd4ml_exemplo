@@ -5,10 +5,11 @@ experiment_name: "projeto_cd4ml_exemplo"
 Projeto: "CD4ML Tutorial"
 team: "Data Science Team"
 dataset: "Breast Cancer"
-description: ""
 
 # MODEL
 data_raw_path: "..."
 algorithm_name: "RandomForestClassifier"
 params_filepath: 'parameters1.json'
 registered_model_name: "RandomForestClassifierBreastCancerModel"
+description: ""
+tags: [randomforest, classifier]

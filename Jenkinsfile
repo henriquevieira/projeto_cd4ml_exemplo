@@ -76,7 +76,8 @@ pipeline {
         //             not { equals expected: 'default', actual: "${params.algorithm_params_name}"}
         //        }
         //    }
-           steps {
+            when { triggeredBy 'RestartDeclarativePipelineCause' }
+            steps {
                 // sh '''
                 // set +e
                 // python3 run_python_script.py acceptance
@@ -84,7 +85,7 @@ pipeline {
                 // '''
                 // sh 'python3 run_python_script.py register_model ${MLFLOW_TRACKING_URL} no'
                 sh 'echo run dev'
-           }
+            }
        }
     }
 }
