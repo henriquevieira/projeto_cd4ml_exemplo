@@ -7,6 +7,9 @@ pipeline {
     //     string(name: 'algorithm_name', defaultValue: 'default', description: 'Specify the algorithm (overrides problem_params)')
     //     string(name: 'algorithm_params_name', defaultValue: 'default', description: 'Specify the algorithm params')
     // }
+        parameters {
+            choice(name: 'experiment', choices: ['yes', 'no'], description: 'Try an experiment')
+        }
     triggers {
         // Poll SCM every minute for new changes
         pollSCM('* * * * *')
@@ -53,10 +56,14 @@ pipeline {
         //             equals expected: 'default', actual: "${params.algorithm_params_name}"
         //        }
         //    }
-           steps {
+            when { allOf {
+                       equals expected: 'no', actual: "${params.experiment}"
+                       }
+                    }
+            steps {
                 // sh 'python3 run_python_script.py acceptance'
                 sh 'echo production'
-           }
+            }
         //    post {
         //         success {
         //             sh 'python3 run_python_script.py register_model ${MLFLOW_TRACKING_URL} yes'
@@ -76,7 +83,10 @@ pipeline {
         //             not { equals expected: 'default', actual: "${params.algorithm_params_name}"}
         //        }
         //    }
-            when { triggeredBy 'RestartDeclarativePipelineCause' }
+            when { allOf {
+                       equals expected: 'yes', actual: "${params.experiment}"
+                       }
+                    }
             steps {
                 // sh '''
                 // set +e
