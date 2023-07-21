@@ -12,14 +12,14 @@ from src.models.train_model import TrainModel
 class RegisterModel:
 
     # def __init__(self, experiment_name, data, algorithm_name, params_filepath):
-    def __init__(self, data, **kargs):
-        self.experiment_name = kargs['experiment_name']
+    def __init__(self, data, pipeline_config):
+        self.experiment_name = pipeline_config.get_config(config_name='experiment_name')
         self.data = data
-        self.algorithm_name = kargs['algorithm_name']
-        self.params_filepath = kargs['params_filepath']
-        self.registered_model_name = kargs['registered_model_name']
-        self.model_description = kargs['description']
-        self.model_tags = kargs['tags']
+        self.algorithm_name = pipeline_config.get_config(config_name='algorithm_name')
+        self.params_filepath = pipeline_config.get_config(config_name='params_filepath')
+        self.registered_model_name = pipeline_config.get_config(config_name='registered_model_name')
+        self.model_description = pipeline_config.get_config(config_name='description')
+        self.model_tags = pipeline_config.get_config(config_name='tags')
 
         self.remote_server_uri = os.environ['MLFLOW_TRACKING_URL']
 

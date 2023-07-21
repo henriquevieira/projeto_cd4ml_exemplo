@@ -28,5 +28,5 @@ data = LoadData(path = data_path)
 #                    algorithm_name = pipeline_config.get_config("algorithm_name"), 
 #                    params_filepath = pipeline_config.get_config("params_filepath"))
 
-rg = RegisterModel(data = data, pipeline_config)
+rg = RegisterModel(data = data, pipeline_config = pipeline_config)
 rg.do_training_and_registering()
