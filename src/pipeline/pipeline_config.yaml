@@ -12,4 +12,6 @@ algorithm_name: "RandomForestClassifier"
 params_filepath: 'parameters1.json'
 registered_model_name: "RandomForestClassifierBreastCancerModel"
 description: ""
-tags: [randomforest, classifier]
+tags: 
+  algorithm:randomforest
+  typr:classifier
